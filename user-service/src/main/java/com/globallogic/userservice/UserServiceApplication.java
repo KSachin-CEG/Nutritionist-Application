@@ -7,8 +7,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @SpringBootApplication
-public class UserService {
+public class UserServiceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(UserService.class, args);
+		SpringApplication.run(UserServiceApplication.class, args);
 	}
 }

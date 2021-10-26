@@ -1,6 +1,6 @@
 package com.globallogic.userservice;
 
-public class UserServiceTest 
+public class UserServiceApplicationTest 
 {
    
 }
