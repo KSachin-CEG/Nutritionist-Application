@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.globallogic.userservice.exception.UserNotFoundException;
 import com.globallogic.userservice.model.User;
+import com.globallogic.userservice.service.JwtTokenUtil;
 import com.globallogic.userservice.service.UserService;
 
 @RestController
@@ -24,6 +25,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@PostMapping(value = "/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
@@ -35,14 +39,19 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/login/{userName}/{password}")
-	public ResponseEntity<?> loginUser(@PathVariable String userName, @PathVariable String password) {
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody User user) {
+		String userName = user.getUserName();
+		String password = user.getPassword();
 		try {
 			if (userName == null || password == null) {
 				throw new Exception("Username or Password can not be empty");
 			}
-			User user = userService.findByUserNameAndPassword(userName, password);
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			User reqUser = userService.findByUserNameAndPassword(userName, password);
+			if (reqUser == null)
+				throw new UserNotFoundException("Sorry, " + userName + "'s profile does not exist. First Register to login.");
+			String token = jwtTokenUtil.generateToken(user);
+			return new ResponseEntity<>(token, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Message" + e.getMessage(), HttpStatus.UNAUTHORIZED);
 		}
@@ -53,7 +62,7 @@ public class UserController {
 		return new ResponseEntity<>("User logged out successfully", HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/users", consumes = { "application/xml", "application/json" })
+	@PutMapping(value = "/users")
 	public ResponseEntity<?> updateUser(@RequestBody User user) {
 		User updatedUser = userService.updateUser(user);
 		if (updatedUser == null)
