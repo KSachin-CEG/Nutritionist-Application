@@ -16,35 +16,26 @@ import com.globallogic.userservice.model.User;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class UserRepositoryTest {
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Test
-	public void givenInValidUserIdThenReturnEmptyOptional(){
-	        assertTrue(userRepository.findById(-1).isEmpty());
+	public void givenInValidUserIdThenReturnEmptyOptional() {
+		assertTrue(userRepository.findById(-1).isEmpty());
 	}
-	
+
 	@Test
-    public void givenValidUserIdThenReturnUserOptional(){
+	public void givenValidUserIdThenReturnUserOptional() {
+		User user = new User(1, "Shriya", "Qwerty@123", new Date(1997 - 05 - 18), "Female", "India", "North", "Veg");
+		userRepository.save(user);
+		assertTrue(userRepository.findById(1).isPresent());
+	}
 
-		User user=new User(1,"Shriya_Goyal","Qwerty@123",new Date(1997-05-18),"Female","India","North","Veg");
-        userRepository.save(user);
-        assertTrue(userRepository.findById(1).isPresent());
-    }
-	
-	 @Test
-	 public void givenNewUserWhenSavedThenReturnUser(){
-		User user=new User(2,"Shriya_Goyal","Qwerty@123",new Date(1997-05-18),"Female","India","North","Veg");		
-	    User addedUser = userRepository.save(user);
-	    System.out.println(addedUser.getUserId());
-	    assertEquals(user.getUserId(),addedUser.getUserId());
-	    
-	 }
-
-
-	
-	
-
-
+	@Test
+	public void givenUserToSaveThenShouldReturnSavedUser() {
+		User user = new User(2, "Sachin", "Qwerty@123", new Date(1997 - 05 - 18), "Male", "India", "North", "Veg");
+		User addedUser = userRepository.save(user);
+		assertEquals(user.getUserId(), addedUser.getUserId());
+	}
 }

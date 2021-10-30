@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Nutrient {
 
-	private int id;
-	private String name;
+	private int nutrientId;
+	private String nutrientName;
 	private String unitName;
 
 }

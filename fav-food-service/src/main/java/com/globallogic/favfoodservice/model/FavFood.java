@@ -13,7 +13,7 @@ public class FavFood {
 
 	private int fdcId;
 	private String description;
-	private List<FoodNutrient> foodNutrients;
+	private List<Nutrient> foodNutrients;
 	private String brandOwner;
 	private String brandedFoodCategory;
 }

@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUser(User user) {
-		if (getUserById(user.getUserId()) == null)
+		if (userRepository.findById(user.getUserId()) == null)
 			return null;
 		return userRepository.save(user);
 	}
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User deleteUserById(int userId) {
-		if (getUserById(userId) == null)
+		if (userRepository.findById(userId) == null)
 			return null;
 		User deletedUser = getUserById(userId);
 		userRepository.deleteById(userId);

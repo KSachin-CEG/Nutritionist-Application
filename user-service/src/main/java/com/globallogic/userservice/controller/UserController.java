@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.globallogic.userservice.exception.UserNotFoundException;
 import com.globallogic.userservice.model.User;
 import com.globallogic.userservice.service.JwtTokenUtil;
 import com.globallogic.userservice.service.UserService;
@@ -41,20 +40,20 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody User user) {
+		try {
+			if (user.getUserName() == null || user.getPassword() == null || user == null)
+				throw new RuntimeException("Username or Password can not be empty");
+		} catch (RuntimeException e) {
+			return new ResponseEntity<String>("Message" + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 		String userName = user.getUserName();
 		String password = user.getPassword();
-		try {
-			if (userName == null || password == null) {
-				throw new Exception("Username or Password can not be empty");
-			}
-			User reqUser = userService.findByUserNameAndPassword(userName, password);
-			if (reqUser == null)
-				throw new UserNotFoundException("Sorry, " + userName + "'s profile does not exist. First Register to login.");
-			String token = jwtTokenUtil.generateToken(user);
-			return new ResponseEntity<>(token, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("Message" + e.getMessage(), HttpStatus.UNAUTHORIZED);
-		}
+		User reqUser = userService.findByUserNameAndPassword(userName, password);
+		if (reqUser == null)
+			return new ResponseEntity<>("Sorry, " + userName + "'s profile does not exist. First Register to login.",
+					HttpStatus.NOT_FOUND);
+		String token = jwtTokenUtil.generateToken(user);
+		return new ResponseEntity<>(token, HttpStatus.OK);
 	}
 
 	@GetMapping("/logout")
