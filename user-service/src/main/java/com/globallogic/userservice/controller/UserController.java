@@ -41,7 +41,7 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody User user) {
 		try {
-			if (user.getUserName() == null || user.getPassword() == null || user == null)
+			if (user == null || user.getUserName() == null || user.getPassword() == null)
 				throw new RuntimeException("Username or Password can not be empty");
 		} catch (RuntimeException e) {
 			return new ResponseEntity<String>("Message" + e.getMessage(), HttpStatus.BAD_REQUEST);

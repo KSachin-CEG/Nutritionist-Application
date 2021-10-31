@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +57,7 @@ public class UserControllerTest {
 
 	@BeforeEach
 	public void setUp() {
-		user = new User(1, "Shriya", "Qwerty@123", new Date(1997-05-18), "Female", "India", "North", "Veg");
+		user = new User(1, "Shriya", "Qwerty@123", new Date(1997 - 05 - 18), "Female", "India", "North", "Veg");
 		userList.add(user);
 	}
 
@@ -123,6 +124,23 @@ public class UserControllerTest {
 				post("/api/v1/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(unacceptedUser)))
 				.andExpect(status().isBadRequest());
 		verify(userService, times(0)).saveUser(user);
+	}
+
+	@Test
+	public void givenNullUserDetailsThenShouldThrowRuntimeException() throws Exception {
+		User unacceptedUser = null;
+		ResponseEntity<?> runtimeExceptionMessage = userController.loginUser(unacceptedUser);
+		mockMvc.perform(
+				post("/api/v1/login").contentType(MediaType.APPLICATION_JSON).content(asJsonString(unacceptedUser)))
+				.andExpect(status().isBadRequest());
+		assertEquals("MessageUsername or Password can not be empty", runtimeExceptionMessage.getBody());
+	}
+
+	@Test
+	public void requestForLogoutThenShouldReturnOkHttpCode() throws Exception {
+		ResponseEntity<?> acceptedMessage = userController.logout();
+		mockMvc.perform(get("/api/v1/logout")).andExpect(status().isOk());
+		assertEquals("User logged out successfully", acceptedMessage.getBody());
 	}
 
 	@Test

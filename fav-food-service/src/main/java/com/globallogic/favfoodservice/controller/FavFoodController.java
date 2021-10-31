@@ -2,6 +2,8 @@ package com.globallogic.favfoodservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +23,12 @@ public class FavFoodController {
 	private RestTemplate restTemplate;
 
 	@GetMapping("brand/{brandedFoodCategory}")
-	public BrandedFoods getFoodByBrand(@PathVariable String brandedFoodCategory) {
+	public ResponseEntity<?> getFoodByBrand(@PathVariable String brandedFoodCategory) {
 		BrandedFoods foods = restTemplate.getForObject(
 				"https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + apiKey + "&query=" + brandedFoodCategory,
 				BrandedFoods.class);
-		return foods;
+		if(foods == null)
+			return new ResponseEntity<>("No food available for this category", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(foods, HttpStatus.FOUND);
 	}
 }
