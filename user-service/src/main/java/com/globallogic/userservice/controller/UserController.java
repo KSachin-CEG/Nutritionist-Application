@@ -69,7 +69,7 @@ public class UserController {
 		return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 	}
 
-	@GetMapping("/users/{userId}")
+	@GetMapping("users/{userId}")
 	public ResponseEntity<?> getUserById(@PathVariable int userId) {
 		User reqUser = userService.getUserById(userId);
 		if (reqUser == null)

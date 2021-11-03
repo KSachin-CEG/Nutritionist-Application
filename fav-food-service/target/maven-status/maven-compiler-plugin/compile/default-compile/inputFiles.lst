@@ -1,0 +1,16 @@
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/BookmarkedFood.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/RecommendedFoodCompositeKey.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/service/RecommendedFoodService.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/dao/RecommendedFoodRepository.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/RecommendedFoods.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/User.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/controller/FavFoodController.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/FavFoodCompositeKey.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/service/FavFoodService.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/dao/FavFoodRepository.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/FavFoodServiceApplication.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/service/RecommendedFoodServiceImpl.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/FavFood.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/BrandedFoods.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/model/Nutrient.java
+/home/shriya.goyal/Desktop/Nutritionist App /nutritionist-app/fav-food-service/src/main/java/com/globallogic/favfoodservice/service/FavFoodServiceImpl.java

@@ -1,0 +1,30 @@
+server:
+  port: 9092
+  
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: fav-food-service
+        uri:
+          lb://fav-food-service
+        predicates:
+        - Path=/favfood/**
+  application:
+    name: cloud-gateway  
+    
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    
+jwt:
+  secret: Covid19
+  token:
+    validity: 5000
+    
+    
