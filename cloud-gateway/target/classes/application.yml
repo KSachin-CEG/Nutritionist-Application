@@ -1,10 +1,20 @@
 server:
-  port: 9092
+  port: 9095
   
 spring:
   cloud:
     gateway:
       routes:
+      - id: admin-service
+        uri:
+          lb://admin-service
+        predicates:
+        - Path=/api/v1/admin/**
+      - id: recommendation-service
+        uri:
+          lb://recommendation-service
+        predicates:
+        - Path=/recommendFood/**
       - id: fav-food-service
         uri:
           lb://fav-food-service

@@ -19,9 +19,7 @@ import com.globallogic.favfoodservice.model.BookmarkedFood;
 import com.globallogic.favfoodservice.model.BrandedFoods;
 import com.globallogic.favfoodservice.model.FavFood;
 import com.globallogic.favfoodservice.model.FavFoodCompositeKey;
-import com.globallogic.favfoodservice.model.RecommendedFoods;
 import com.globallogic.favfoodservice.service.FavFoodService;
-import com.globallogic.favfoodservice.service.RecommendedFoodService;
 
 @RestController
 @RequestMapping("/favfood")
@@ -36,9 +34,6 @@ public class FavFoodController {
 	@Autowired
 	private FavFoodService favFoodService;
 
-	@Autowired
-	private RecommendedFoodService recommendedFoodService;
-
 	public FavFood getFoodById(int fdcId) {
 		try {
 			FavFood favFood = restTemplate.getForObject(
@@ -47,13 +42,6 @@ public class FavFoodController {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	public void addRecommendedFood(String brandedFoodCategory) {
-
-		/* write logic to check get userid if authorized */
-		RecommendedFoods recommendedFoods = new RecommendedFoods(7, brandedFoodCategory);
-		recommendedFoodService.addRecommendedFood(recommendedFoods);
 	}
 
 	@GetMapping("brand/{brandedFoodCategory}")
@@ -68,7 +56,7 @@ public class FavFoodController {
 			return new ResponseEntity<>("No food available for this category", HttpStatus.NOT_FOUND);
 
 		/* if(user != null) - logic to verify user is logged in */
-		addRecommendedFood(brandedFoodCategory);
+		restTemplate.getForObject("http://localhost:9092/recommendFood/" + brandedFoodCategory, String.class);
 
 		return new ResponseEntity<>(foods, HttpStatus.FOUND);
 	}
@@ -82,8 +70,9 @@ public class FavFoodController {
 		if (food == null)
 			return new ResponseEntity<>("Food with ID : " + fdcId + " does not exist", HttpStatus.NOT_FOUND);
 		BookmarkedFood bookmarkedFood = new BookmarkedFood(7, food.getFdcId());
-		RecommendedFoods recommendedFoods = new RecommendedFoods(7, food.getBrandedFoodCategory());
-		recommendedFoodService.addRecommendedFood(recommendedFoods);
+
+		restTemplate.getForObject("http://localhost:9092/recommendFood/" + food.getBrandedFoodCategory(), String.class);
+
 		return new ResponseEntity<>(favFoodService.addFavFood(bookmarkedFood), HttpStatus.FOUND);
 	}
 
@@ -110,6 +99,7 @@ public class FavFoodController {
 			return new ResponseEntity<>("No food is bookmarked till now", HttpStatus.NOT_FOUND);
 		String commaSeparatedFoodIds = String.join(",",
 				favFoodList.stream().map(id -> id.toString()).collect(Collectors.toList()));
+
 		@SuppressWarnings("unchecked")
 		ArrayList<FavFood> foods = (ArrayList<FavFood>) restTemplate.getForObject(
 				"https://api.nal.usda.gov/fdc/v1/foods?fdcIds=" + commaSeparatedFoodIds + "&api_key=" + apiKey,
@@ -117,20 +107,4 @@ public class FavFoodController {
 		return new ResponseEntity<>(foods, HttpStatus.OK);
 	}
 
-	@GetMapping("/recommend")
-	public List<FavFood> getRecommendedFoods() {
-
-		/* write logic to check get userid if authorized */
-
-		List<FavFood> recommendedFoods = new ArrayList<>();
-		List<String> recommendedFoodBrandList = recommendedFoodService.getAllRecommendedFoods(7);
-
-		for (String brand : recommendedFoodBrandList) {
-			BrandedFoods foods = restTemplate.getForObject(
-					"https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + apiKey + "&query=" + brand,
-					BrandedFoods.class);
-			recommendedFoods.addAll(foods.getFoods());
-		}
-		return recommendedFoods;
-	}
 }

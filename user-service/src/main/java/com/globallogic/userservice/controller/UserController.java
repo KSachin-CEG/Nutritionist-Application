@@ -1,13 +1,9 @@
 package com.globallogic.userservice.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,12 +26,8 @@ public class UserController {
 
 	@PostMapping(value = "/register")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
-		try {
-			User newUser = userService.saveUser(user);
-			return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>("Message :" + e.getMessage(), HttpStatus.CONFLICT);
-		}
+		User newUser = userService.saveUser(user);
+		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 
 	@PostMapping("/login")
@@ -67,27 +59,5 @@ public class UserController {
 		if (updatedUser == null)
 			return new ResponseEntity<>("User with ID : " + user.getUserId() + " is not found", HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-	}
-
-	@GetMapping("users/{userId}")
-	public ResponseEntity<?> getUserById(@PathVariable int userId) {
-		User reqUser = userService.getUserById(userId);
-		if (reqUser == null)
-			return new ResponseEntity<>("User with ID : " + userId + " is not found", HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(reqUser, HttpStatus.OK);
-	}
-
-	@GetMapping("/users")
-	public ResponseEntity<?> getAllUsers() {
-		List<User> users = userService.getAllUsers();
-		return new ResponseEntity<>(users, HttpStatus.OK);
-	}
-
-	@DeleteMapping("users/{userId}")
-	public ResponseEntity<?> deleteUserById(@PathVariable int userId) {
-		User deletedUser = userService.deleteUserById(userId);
-		if (deletedUser == null)
-			return new ResponseEntity<>("User with ID : " + userId + " is not found", HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(deletedUser, HttpStatus.OK);
 	}
 }

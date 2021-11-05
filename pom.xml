@@ -123,6 +123,8 @@
 		<module>user-service</module>
 		<module>fav-food-service</module>
 		<module>eureka-server</module>
-    <module>cloud-gateway</module>
+		<module>cloud-gateway</module>
+		<module>recommendation-service</module>
+    <module>admin-service</module>
   </modules>
 </project>

@@ -1,7 +1,5 @@
 package com.globallogic.userservice.service;
 
-import java.util.List;
-	
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +28,4 @@ public class UserServiceImpl implements UserService {
 			return null;
 		return userRepository.save(user);
 	}
-
-	@Override
-	public User getUserById(int userId) {
-		return userRepository.findById(userId).orElse(null);
-	}
-
-	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
-
-	@Override
-	public User deleteUserById(int userId) {
-		if (userRepository.findById(userId) == null)
-			return null;
-		User deletedUser = getUserById(userId);
-		userRepository.deleteById(userId);
-		return deletedUser;
-	}
-
 }
