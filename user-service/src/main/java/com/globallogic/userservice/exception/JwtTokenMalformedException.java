@@ -1,4 +1,4 @@
-package com.globallogic.gateway.exception;
+package com.globallogic.userservice.exception;
 
 import javax.naming.AuthenticationException;
 

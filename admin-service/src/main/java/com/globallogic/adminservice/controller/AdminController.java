@@ -15,13 +15,13 @@ import com.globallogic.adminservice.model.User;
 import com.globallogic.adminservice.service.AdminService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
 
-	@GetMapping("/admin/{userId}")
+	@GetMapping("/{userId}")
 	public ResponseEntity<?> getUserById(@PathVariable int userId) {
 		User reqUser = adminService.getUserById(userId);
 		if (reqUser == null)
@@ -29,13 +29,13 @@ public class AdminController {
 		return new ResponseEntity<>(reqUser, HttpStatus.OK);
 	}
 
-	@GetMapping("/admin")
+	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUsers() {
 		List<User> users = adminService.getAllUsers();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/admin/{userId}")
+	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> deleteUserById(@PathVariable int userId) {
 		User deletedUser = adminService.deleteUserById(userId);
 		if (deletedUser == null)

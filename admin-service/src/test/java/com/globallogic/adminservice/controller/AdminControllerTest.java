@@ -61,21 +61,21 @@ public class AdminControllerTest {
 	@Test
 	public void givenValidUserIdThenShouldReturnRespectiveUser() throws Exception {
 		when(adminService.getUserById(user.getUserId())).thenReturn(user);
-		mockMvc.perform(get("/api/v1/admin/1")).andExpect(status().isOk());
+		mockMvc.perform(get("/admin/1")).andExpect(status().isOk());
 		verify(adminService, times(1)).getUserById(user.getUserId());
 	}
 
 	@Test
 	public void givenInValidUserIdThenShouldReturnNotFoundHttpCode() throws Exception {
 		when(adminService.getUserById(user.getUserId())).thenReturn(null);
-		mockMvc.perform(get("/api/v1/admin/1")).andExpect(status().isNotFound());
+		mockMvc.perform(get("/admin/1")).andExpect(status().isNotFound());
 		verify(adminService, times(1)).getUserById(user.getUserId());
 	}
 
 	@Test
 	public void givenGetAllUsersThenShouldReturnUserList() throws Exception {
 		when(adminService.getAllUsers()).thenReturn(userList);
-		mockMvc.perform(get("/api/v1/admin")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)));
+		mockMvc.perform(get("/admin/getAll")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)));
 		verify(adminService).getAllUsers();
 		verify(adminService, times(1)).getAllUsers();
 	}
@@ -83,14 +83,14 @@ public class AdminControllerTest {
 	@Test
 	public void givenValidUserToDeleteThenShouldReturnUpdatedUser() throws Exception {
 		when(adminService.deleteUserById(user.getUserId())).thenReturn(user);
-		mockMvc.perform(delete("/api/v1/admin/1")).andExpect(status().isOk());
+		mockMvc.perform(delete("/admin/1")).andExpect(status().isOk());
 		verify(adminService, times(1)).deleteUserById(user.getUserId());
 	}
 
 	@Test
 	public void givenInvalidUserToDeleteThenShouldReturnNotFoundHttpCode() throws Exception {
 		when(adminService.deleteUserById(user.getUserId())).thenReturn(null);
-		mockMvc.perform(delete("/api/v1/admin/1")).andExpect(status().isNotFound());
+		mockMvc.perform(delete("/admin/1")).andExpect(status().isNotFound());
 		verify(adminService, times(1)).deleteUserById(user.getUserId());
 	}
 

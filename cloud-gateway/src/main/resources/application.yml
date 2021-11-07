@@ -5,11 +5,16 @@ spring:
   cloud:
     gateway:
       routes:
+      - id: user-service
+        uri:
+          lb://user-service
+        predicates:
+        - Path=/api/v1/**
       - id: admin-service
         uri:
           lb://admin-service
         predicates:
-        - Path=/api/v1/admin/**
+        - Path=/admin/**
       - id: recommendation-service
         uri:
           lb://recommendation-service
@@ -34,7 +39,5 @@ eureka:
     
 jwt:
   secret: Covid19
-  token:
-    validity: 5000
     
     

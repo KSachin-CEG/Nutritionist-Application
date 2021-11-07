@@ -1,4 +1,4 @@
-package com.globallogic.gateway;
+package com.globallogic.gateway.filter;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -14,6 +14,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import com.globallogic.gateway.exception.JwtTokenMalformedException;
 import com.globallogic.gateway.exception.JwtTokenMissingException;
+import com.globallogic.gateway.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import reactor.core.publisher.Mono;
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationFilter implements GatewayFilter {
 
 	@Autowired
-	private JwtToken jwtToken;
+	private JwtUtil jwtToken;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
