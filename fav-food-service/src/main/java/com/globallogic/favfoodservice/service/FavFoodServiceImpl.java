@@ -21,8 +21,9 @@ public class FavFoodServiceImpl implements FavFoodService{
 	}
 	
 	@Override
-	public void deleteFavFood(FavFoodCompositeKey id) {
+	public String deleteFavFood(FavFoodCompositeKey id) {
 		favFoodRepository.deleteById(id);
+		return "Food Deleted";
 	}
 
 	@Override

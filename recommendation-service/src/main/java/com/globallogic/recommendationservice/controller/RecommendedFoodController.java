@@ -36,7 +36,7 @@ public class RecommendedFoodController {
 
 		/* write logic to check get userid if authorized */
 		RecommendedFoods recommendedFoods = new RecommendedFoods(7, brandedFoodCategory);
-		recommendedFoodService.addRecommendedFood(recommendedFoods);
+		RecommendedFoods savedFood = recommendedFoodService.addRecommendedFood(recommendedFoods);
 		return new ResponseEntity<>("Added to recommendations", HttpStatus.OK);
 	}
 
@@ -46,15 +46,16 @@ public class RecommendedFoodController {
 		/* write logic to check get userid if authorized */
 
 		List<FavFood> recommendedFoods = new ArrayList<>();
+
+		/* if(user != null) - logic to verify user is logged in */
 		List<String> recommendedFoodBrandList = recommendedFoodService.getAllRecommendedFoods(7);
-		List<String> recommendedFoodBrands = recommendations();
-		
 		for (String brand : recommendedFoodBrandList) {
 			BrandedFoods foods = searchByBrand(brand);
 			recommendedFoods.addAll(foods.getFoods());
 		}
 
-		for (String brand : recommendedFoodBrands) {
+		List<String> defaultRecommendedBrandList = recommendations();
+		for (String brand : defaultRecommendedBrandList) {
 			BrandedFoods foods = searchByBrand(brand);
 			recommendedFoods.addAll(foods.getFoods());
 		}

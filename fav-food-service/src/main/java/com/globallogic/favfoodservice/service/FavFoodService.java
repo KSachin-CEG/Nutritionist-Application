@@ -9,7 +9,7 @@ public interface FavFoodService {
 
 	public BookmarkedFood addFavFood(BookmarkedFood bookmarkedFood);
 
-	public void deleteFavFood(FavFoodCompositeKey id);
+	public String deleteFavFood(FavFoodCompositeKey id);
 
 	public List<Integer> getAllFavFood(int userId);
 

@@ -15,8 +15,8 @@ public class RecommendedFoodServiceImpl implements RecommendedFoodService {
 	private RecommendedFoodRepository recommendedFoodRepository;
 
 	@Override
-	public void addRecommendedFood(RecommendedFoods recommendedFoods) {
-		recommendedFoodRepository.save(recommendedFoods);
+	public RecommendedFoods addRecommendedFood(RecommendedFoods recommendedFoods) {
+		return recommendedFoodRepository.save(recommendedFoods);
 	}
 
 	@Override
@@ -26,7 +26,10 @@ public class RecommendedFoodServiceImpl implements RecommendedFoodService {
 
 	@Override
 	public List<String> recommendations() {
-		return recommendedFoodRepository.recommendations().subList(0, 5);
+		List<String> brandList = recommendedFoodRepository.recommendations();
+		if(brandList.size()>5)
+			brandList = brandList.subList(0, 5);
+		return brandList;
 	}
 
 }

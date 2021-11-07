@@ -94,11 +94,4 @@ public class AdminControllerTest {
 		verify(adminService, times(1)).deleteUserById(user.getUserId());
 	}
 
-	public static String asJsonString(final Object obj) {
-		try {
-			return new ObjectMapper().writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
 }

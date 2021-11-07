@@ -6,7 +6,7 @@ import com.globallogic.recommendationservice.model.RecommendedFoods;
 
 public interface RecommendedFoodService {
 
-	public void addRecommendedFood(RecommendedFoods recommendedFoods);
+	public RecommendedFoods addRecommendedFood(RecommendedFoods recommendedFoods);
 
 	public List<String> getAllRecommendedFoods(int i);
 

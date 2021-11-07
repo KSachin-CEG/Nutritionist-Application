@@ -43,16 +43,20 @@ public class FavFoodController {
 			return null;
 		}
 	}
+	
+	public BrandedFoods searchFoodByBrand(String brandedFoodCategory) {
+		return restTemplate.getForObject(
+				"https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + apiKey + "&query=" + brandedFoodCategory,
+				BrandedFoods.class);
+	}
 
 	@GetMapping("brand/{brandedFoodCategory}")
 	public ResponseEntity<?> getFoodByBrand(@PathVariable String brandedFoodCategory) {
 
 		/* write logic to check whether a user is logged in or not */
 
-		BrandedFoods foods = restTemplate.getForObject(
-				"https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + apiKey + "&query=" + brandedFoodCategory,
-				BrandedFoods.class);
-		if (foods == null)
+		BrandedFoods foods = searchFoodByBrand(brandedFoodCategory);
+		if (foods.getFoods().isEmpty())
 			return new ResponseEntity<>("No food available for this category", HttpStatus.NOT_FOUND);
 
 		/* if(user != null) - logic to verify user is logged in */
@@ -85,11 +89,11 @@ public class FavFoodController {
 		if (food == null)
 			return new ResponseEntity<>("Food with ID : " + fdcId + " does not exist", HttpStatus.NOT_FOUND);
 		FavFoodCompositeKey id = new FavFoodCompositeKey(7, fdcId);
-		favFoodService.deleteFavFood(id);
+		String response = favFoodService.deleteFavFood(id);
 		return new ResponseEntity<>("Food with ID : " + food.getFdcId() + " has been deleted", HttpStatus.OK);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllFavFood() {
 
 		/* write logic to check get userid if authorized */
