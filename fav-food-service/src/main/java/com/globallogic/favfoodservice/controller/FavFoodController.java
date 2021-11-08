@@ -29,23 +29,28 @@ public class FavFoodController {
 	private String apiKey;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	@Qualifier("internalApiBean")
+	private RestTemplate internalApiBean;
+
+	@Autowired
+	@Qualifier("externalApiBean")
+	private RestTemplate externalApiBean;
 
 	@Autowired
 	private FavFoodService favFoodService;
 
 	public FavFood getFoodById(int fdcId) {
 		try {
-			FavFood favFood = restTemplate.getForObject(
+			FavFood favFood = externalApiBean.getForObject(
 					"https://api.nal.usda.gov/fdc/v1/food/" + fdcId + "?api_key=" + apiKey, FavFood.class);
 			return favFood;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	public BrandedFoods searchFoodByBrand(String brandedFoodCategory) {
-		return restTemplate.getForObject(
+		return externalApiBean.getForObject(
 				"https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + apiKey + "&query=" + brandedFoodCategory,
 				BrandedFoods.class);
 	}
@@ -60,7 +65,8 @@ public class FavFoodController {
 			return new ResponseEntity<>("No food available for this category", HttpStatus.NOT_FOUND);
 
 		/* if(user != null) - logic to verify user is logged in */
-		restTemplate.getForObject("http://localhost:9092/recommendFood/" + brandedFoodCategory, String.class);
+		internalApiBean.getForObject("http://recommendation-service/recommendFood/" + brandedFoodCategory,
+				String.class);
 
 		return new ResponseEntity<>(foods, HttpStatus.FOUND);
 	}
@@ -75,7 +81,8 @@ public class FavFoodController {
 			return new ResponseEntity<>("Food with ID : " + fdcId + " does not exist", HttpStatus.NOT_FOUND);
 		BookmarkedFood bookmarkedFood = new BookmarkedFood(7, food.getFdcId());
 
-		restTemplate.getForObject("http://localhost:9092/recommendFood/" + food.getBrandedFoodCategory(), String.class);
+		internalApiBean.getForObject("http://recommendation-service/recommendFood/" + food.getBrandedFoodCategory(),
+				String.class);
 
 		return new ResponseEntity<>(favFoodService.addFavFood(bookmarkedFood), HttpStatus.FOUND);
 	}
@@ -105,10 +112,9 @@ public class FavFoodController {
 				favFoodList.stream().map(id -> id.toString()).collect(Collectors.toList()));
 
 		@SuppressWarnings("unchecked")
-		ArrayList<FavFood> foods = (ArrayList<FavFood>) restTemplate.getForObject(
+		ArrayList<FavFood> foods = (ArrayList<FavFood>) externalApiBean.getForObject(
 				"https://api.nal.usda.gov/fdc/v1/foods?fdcIds=" + commaSeparatedFoodIds + "&api_key=" + apiKey,
 				ArrayList.class);
 		return new ResponseEntity<>(foods, HttpStatus.OK);
 	}
-
 }

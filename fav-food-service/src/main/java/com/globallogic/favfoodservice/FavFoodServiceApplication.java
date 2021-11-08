@@ -17,14 +17,20 @@ public class FavFoodServiceApplication {
 		SpringApplication.run(FavFoodServiceApplication.class, args);
 	}
 
-	@Bean
-	public RestTemplate getRestTemplate() {
+	@LoadBalanced
+	@Bean(name = "internalApiBean")
+	public RestTemplate getInternalRestTemplate() {
 		/*
 		 * HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new
 		 * HttpComponentsClientHttpRequestFactory();
 		 * clientHttpRequestFactory.setConnectTimeout(3000);
 		 * clientHttpRequestFactory.setReadTimeout(3000);
 		 */
+		return new RestTemplate();
+	}
+	
+	@Bean(name = "externalApiBean")
+	public RestTemplate getExternalRestTemplate() {
 		return new RestTemplate();
 	}
 }
